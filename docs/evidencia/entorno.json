@@ -1,0 +1,14 @@
+{
+  "date_local": "2026-10-21",
+  "timezone": "America/Mexico_City",
+  "host": "macOS arm64",
+  "go": "go1.27.3 darwin/arm64",
+  "python_base": "3.14.5",
+  "python_opencv_test": "3.12.13, entorno existente API-kinich",
+  "continuous_seconds": 181,
+  "continuous_events": 181,
+  "lifecycle_cycles": 100,
+  "gpu_validated": false,
+  "vms_deployed": false,
+  "soak_24h_executed": false
+}

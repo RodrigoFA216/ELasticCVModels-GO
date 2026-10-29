@@ -1,0 +1,9 @@
+/.state/
+/.venv/
+/bin/
+/artifacts/
+/.codebase-memory/
+__pycache__/
+*.pyc
+*.sqlite*
+.env

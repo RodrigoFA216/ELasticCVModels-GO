@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kinich private stdio protocol v1",
+  "type": "object",
+  "required": [
+    "v",
+    "kind",
+    "worker_id",
+    "execution_id",
+    "generation"
+  ],
+  "properties": {
+    "v": {
+      "const": 1
+    },
+    "kind": {
+      "enum": [
+        "hello",
+        "open",
+        "ready",
+        "renew",
+        "stop",
+        "ack",
+        "event",
+        "status",
+        "closed",
+        "error",
+        "configure",
+        "inference_request",
+        "inference_done",
+        "permit"
+      ]
+    },
+    "worker_id": {
+      "type": "string"
+    },
+    "execution_id": {
+      "type": "string"
+    },
+    "generation": {
+      "type": "string"
+    },
+    "command_id": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "integer"
+    },
+    "camera_id": {
+      "type": "string"
+    },
+    "lease_ms": {
+      "type": "integer",
+      "minimum": 100,
+      "maximum": 30000
+    },
+    "members": {
+      "type": "array",
+      "maxItems": 16
+    },
+    "source": {
+      "type": "string"
+    },
+    "media": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "event": {
+      "type": "object"
+    },
+    "event_id": {
+      "type": "string"
+    },
+    "accepted": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "member_id": {
+      "type": "string"
+    },
+    "member_generation": {
+      "type": "string"
+    },
+    "permit_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

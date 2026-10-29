@@ -1,0 +1,34 @@
+=== RUN   TestOwnershipIdempotencyAndRevisions
+--- PASS: TestOwnershipIdempotencyAndRevisions (0.07s)
+=== RUN   TestAuthAndEncryptedSecrets
+--- PASS: TestAuthAndEncryptedSecrets (0.07s)
+=== RUN   TestContinuousWorkerCompositionAndDisconnect
+--- PASS: TestContinuousWorkerCompositionAndDisconnect (0.60s)
+=== RUN   TestEventsOutboxAtomicityReplayAndFencing
+--- PASS: TestEventsOutboxAtomicityReplayAndFencing (0.07s)
+=== RUN   TestOutboxRetryKeepsPayloadAndDestination
+--- PASS: TestOutboxRetryKeepsPayloadAndDestination (0.07s)
+=== RUN   TestRollbackBackupAndRestart
+--- PASS: TestRollbackBackupAndRestart (0.08s)
+=== RUN   TestQuotaUnknownProfilesAndForeignKeys
+--- PASS: TestQuotaUnknownProfilesAndForeignKeys (0.07s)
+=== RUN   TestGateFairnessAndOwnership
+--- PASS: TestGateFairnessAndOwnership (0.00s)
+=== RUN   TestSchedulesDSTAndDisabledOccurrences
+--- PASS: TestSchedulesDSTAndDisabledOccurrences (0.06s)
+=== RUN   TestLostEventACKAndProcessCrash
+--- PASS: TestLostEventACKAndProcessCrash (1.39s)
+=== RUN   TestUnconfirmedStopKeepsReservation
+--- PASS: TestUnconfirmedStopKeepsReservation (2.48s)
+=== RUN   TestSSERevocationAndScope
+--- PASS: TestSSERevocationAndScope (0.57s)
+=== RUN   TestLongContinuous
+    runtime_test.go:230: 181s continuos, 181 eventos confirmados
+--- PASS: TestLongContinuous (181.35s)
+=== RUN   TestHundredCycles
+    runtime_test.go:253: 100 altas/paradas, cero reservas finales
+--- PASS: TestHundredCycles (40.00s)
+=== RUN   TestRestartKeepsUnconfirmedResources
+--- PASS: TestRestartKeepsUnconfirmedResources (0.07s)
+PASS
+ok  	kinich-go/tests	227.314s

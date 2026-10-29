@@ -1,0 +1,24 @@
+[Unit]
+Description=Kinich Go control and Python model workers
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kinich
+Group=kinich
+WorkingDirectory=/opt/kinich
+ExecStart=/opt/kinich/bin/kinichd -state /var/lib/kinich -worker-dir /opt/kinich/worker -python /opt/kinich/.venv/bin/python -listen 127.0.0.1:8090
+Restart=on-failure
+RestartSec=5
+KillMode=control-group
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/kinich
+
+[Install]
+WantedBy=multi-user.target

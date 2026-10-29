@@ -1,0 +1,8 @@
+2026-10-21 — America/Mexico_City
+Paquete: artifacts/kinich-0.1.0-local-darwin-arm64.tar.gz
+SHA256: 40ba74be8e65ade93cd213572fda616f1c4369ee00ec9cae0a04d8e40f1de2c3
+Verificados: 83 archivos contra el manifest SHA256 del paquete.
+Sin master.key, estado operativo, pesos ni metadata AppleDouble.
+Binario extraído: version 0.1.0-local.
+Smoke HTTP desde el paquete extraído: init, auth, cámara, Python, evento, disconnect y cierre confirmado: OK.
+Linux amd64: compilación con CGO_ENABLED=0 comprobada; ejecución Linux/CUDA no realizada.

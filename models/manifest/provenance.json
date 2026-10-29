@@ -1,0 +1,170 @@
+[
+  {
+    "file": "worker/vendor/kinich/models/fire.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/fire.py",
+    "sha256": "a5a3f0aeab572016c025b4292e5a1cf686a510589213418ac4ccf14ea3b42de8",
+    "environment_keys": [
+      "KINICH_FIRE_CLIP_MODEL",
+      "KINICH_FIRE_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/fight.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/fight.py",
+    "sha256": "de82b795de67198d4e2e9ab5a4e315581a75086bc84338328777c8e914f3ba8a",
+    "environment_keys": [
+      "KINICH_FIGHT_CLIP_MODEL",
+      "KINICH_FIGHT_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/robbery.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/robbery.py",
+    "sha256": "2c84e841cbe7977b59d37973ebe3e10ca725bd3736f7e1d47c4d264cc8c03f06",
+    "environment_keys": [
+      "KINICH_ROBBERY_CLIP_MODEL",
+      "KINICH_ROBBERY_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/crash.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/crash.py",
+    "sha256": "400e1f2f386d629abc3ba52cb808411be122dc4b846e7aae3a3162744d3e7139",
+    "environment_keys": [
+      "KINICH_CRASH_CLIP_MODEL",
+      "KINICH_CRASH_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/fardeo.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/fardeo.py",
+    "sha256": "9585b100b3c38ce55d05ddbfb99e7b658623d7f272ea9c2b00fce40f3f88d027",
+    "environment_keys": [
+      "KINICH_FARDEO_WEIGHTS",
+      "KINICH_FARDEO_XCLIP_MODEL"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/carparts.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/carparts.py",
+    "sha256": "bd52aabfc6543dbe8b01ec078cc7776be6f0a1d369610d5b671d14e10e180c13",
+    "environment_keys": [
+      "KINICH_CARPARTS_CLIP_MODEL",
+      "KINICH_CARPARTS_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/people_counter.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/people_counter.py",
+    "sha256": "69d4b853565ed73f06fe601d13cd94b85bf5bec6ffd4491b5cb23a47e7fc2612",
+    "environment_keys": [
+      "KINICH_PEOPLE_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/area_restriction.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/area_restriction.py",
+    "sha256": "b995a7ce6fea5823f09d3ded0a4fc85190cacfbd5aeff1bc00c1a38233b117cc",
+    "environment_keys": [
+      "KINICH_AREAREST_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/loitering.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/loitering.py",
+    "sha256": "76dd8a4f41e0d692d57a62cc11ff6852c5ff2e23035afe98c0a16e39a13f9d08",
+    "environment_keys": [
+      "KINICH_LOITERING_RF",
+      "KINICH_LOITERING_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/parking.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/parking.py",
+    "sha256": "deece16a4befce8dfbbcc09273f968dc0a328eac825565eb8c41cdec18de3e5a",
+    "environment_keys": [
+      "KINICH_PARKING_PLATE_WEIGHTS",
+      "KINICH_PARKING_WEIGHTS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/corridor_counter.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/corridor_counter.py",
+    "sha256": "ed801a8938f0a229abd6910a687f416d660ff8508d97b4d0aae9949c6ae9c657",
+    "environment_keys": [
+      "FULLCV_COUNTERS_DIR",
+      "FULLCV_DEBUG_SAVE",
+      "KINICH_COUNT_COUNTERS",
+      "KINICH_COUNT_FPS",
+      "KINICH_COUNT_YOLO"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/queue_cashier.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/queue_cashier.py",
+    "sha256": "28e7f3f88e06e595b70c74e6ae25710a54290f683e574b84027451ad04e39ee3",
+    "environment_keys": [
+      "KINICH_COPPEL_GALLERY",
+      "KINICH_COPPEL_REID",
+      "KINICH_COPPEL_RESULTADOS",
+      "KINICH_COPPEL_YOLO",
+      "KINICH_QC_FPS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/whitegas.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/whitegas.py",
+    "sha256": "5dbf58d518287a63a9fd656d631d88386d99ca80d37979ae3b2a3545f28b6b6b",
+    "environment_keys": [
+      "KINICH_GAS_CKPT",
+      "KINICH_GAS_COMFY",
+      "KINICH_GAS_FPS"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/ppe_detector.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/ppe_detector.py",
+    "sha256": "5ea3891510020fceea018a3ec943f29827d20f1e15c780e5dcc6f16a8c5b5dec",
+    "environment_keys": [
+      "KINICH_PPE_COMFY",
+      "KINICH_PPE_REID",
+      "KINICH_PPE_SAM3_CKPT",
+      "KINICH_PPE_YOLO"
+    ],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/_tracking.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/_tracking.py",
+    "sha256": "e4882eb2c8f3c2fb5e19cb4e577a868b960bcada9fc0b6bbc4fc3795889f5432",
+    "environment_keys": [],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/_preproceso.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/_preproceso.py",
+    "sha256": "fab7d6774d966f63d85c934ec018518f83184b2b883663b0116cad65e67c91d0",
+    "environment_keys": [],
+    "validation": "pending_weights_clips_cuda"
+  },
+  {
+    "file": "worker/vendor/kinich/models/_ritmo.py",
+    "source": "/Users/rodrigo/Documents/ReID-Texto-Israel-2026-10-15/kinich-live-reference/kinich/models/_ritmo.py",
+    "sha256": "ae9bb451d03485d3e13c7eee365a7db658d3789137693e4969166eb25b167ec4",
+    "environment_keys": [],
+    "validation": "pending_weights_clips_cuda"
+  }
+]

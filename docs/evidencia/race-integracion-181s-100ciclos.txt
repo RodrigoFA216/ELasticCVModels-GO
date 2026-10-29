@@ -1,0 +1,62 @@
+?   	kinich-go/cmd/kinichd	[no test files]
+?   	kinich-go/internal/admission	[no test files]
+?   	kinich-go/internal/api	[no test files]
+?   	kinich-go/internal/auth	[no test files]
+?   	kinich-go/internal/catalog	[no test files]
+?   	kinich-go/internal/domain	[no test files]
+=== RUN   TestCallbackNetworkPolicy
+--- PASS: TestCallbackNetworkPolicy (0.00s)
+PASS
+ok  	kinich-go/internal/events	1.441s
+=== RUN   TestStableOwnerAndSemanticClosure
+--- PASS: TestStableOwnerAndSemanticClosure (0.00s)
+PASS
+ok  	kinich-go/internal/integrations/vms	1.602s
+?   	kinich-go/internal/reconcile	[no test files]
+?   	kinich-go/internal/schedule	[no test files]
+?   	kinich-go/internal/store	[no test files]
+?   	kinich-go/internal/supervisor	[no test files]
+=== RUN   TestOwnershipIdempotencyAndRevisions
+--- PASS: TestOwnershipIdempotencyAndRevisions (0.12s)
+=== RUN   TestAuthAndEncryptedSecrets
+--- PASS: TestAuthAndEncryptedSecrets (0.10s)
+=== RUN   TestContinuousWorkerCompositionAndDisconnect
+--- PASS: TestContinuousWorkerCompositionAndDisconnect (0.62s)
+=== RUN   TestEventsOutboxAtomicityReplayAndFencing
+--- PASS: TestEventsOutboxAtomicityReplayAndFencing (0.12s)
+=== RUN   TestOutboxRetryKeepsPayloadAndDestination
+--- PASS: TestOutboxRetryKeepsPayloadAndDestination (0.11s)
+=== RUN   TestRollbackBackupAndRestart
+--- PASS: TestRollbackBackupAndRestart (0.15s)
+=== RUN   TestQuotaUnknownProfilesAndForeignKeys
+--- PASS: TestQuotaUnknownProfilesAndForeignKeys (0.10s)
+=== RUN   TestCredentialCreationIsIdempotentWithoutPersistingSecret
+--- PASS: TestCredentialCreationIsIdempotentWithoutPersistingSecret (0.10s)
+=== RUN   TestRetentionExpiresCursorAndPreservesPendingDelivery
+--- PASS: TestRetentionExpiresCursorAndPreservesPendingDelivery (0.11s)
+=== RUN   TestImageAndClipPredictionsWithCVRuntime
+=== RUN   TestImageAndClipPredictionsWithCVRuntime/image
+=== RUN   TestImageAndClipPredictionsWithCVRuntime/clip
+--- PASS: TestImageAndClipPredictionsWithCVRuntime (2.10s)
+    --- PASS: TestImageAndClipPredictionsWithCVRuntime/image (0.42s)
+    --- PASS: TestImageAndClipPredictionsWithCVRuntime/clip (1.44s)
+=== RUN   TestGateFairnessAndOwnership
+--- PASS: TestGateFairnessAndOwnership (0.00s)
+=== RUN   TestSchedulesDSTAndDisabledOccurrences
+--- PASS: TestSchedulesDSTAndDisabledOccurrences (0.12s)
+=== RUN   TestLostEventACKAndProcessCrash
+--- PASS: TestLostEventACKAndProcessCrash (1.42s)
+=== RUN   TestUnconfirmedStopKeepsReservation
+--- PASS: TestUnconfirmedStopKeepsReservation (2.53s)
+=== RUN   TestSSERevocationAndScope
+--- PASS: TestSSERevocationAndScope (0.63s)
+=== RUN   TestLongContinuous
+    runtime_test.go:230: 181s continuos, 181 eventos confirmados
+--- PASS: TestLongContinuous (181.39s)
+=== RUN   TestHundredCycles
+    runtime_test.go:253: 100 altas/paradas, cero reservas finales
+--- PASS: TestHundredCycles (40.13s)
+=== RUN   TestRestartKeepsUnconfirmedResources
+--- PASS: TestRestartKeepsUnconfirmedResources (0.11s)
+PASS
+ok  	kinich-go/tests	231.751s

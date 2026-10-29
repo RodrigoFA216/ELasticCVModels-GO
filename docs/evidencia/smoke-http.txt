@@ -1,0 +1,1 @@
+Smoke real HTTP: init, auth, cámara, Python, evento, disconnect y cierre confirmado: OK

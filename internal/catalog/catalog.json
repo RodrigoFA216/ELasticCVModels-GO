@@ -1,0 +1,1210 @@
+[
+  {
+    "name": "fire-detector",
+    "version": "2.0",
+    "task": "Detección de fuego y humo en CCTV (YOLO + CV clásico + CLIP temporal)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "FUEGO",
+      "FUEGO_OFF",
+      "HUMO",
+      "HUMO_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "detect_scale": {
+          "type": "number",
+          "default": 1.0,
+          "minimum": 0.1,
+          "maximum": 1.0,
+          "description": "detección a fracción de la resolución (0.5 → 4x más rápido HSV/MOG2)"
+        },
+        "fire_alert_threshold": {
+          "type": "number",
+          "description": "umbral de score suavizado (default según modelo CLIP)"
+        },
+        "fire_consec_min": {
+          "type": "integer",
+          "description": "batches CLIP positivos consecutivos para confirmar"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "fight-detector",
+    "version": "1.0",
+    "task": "Detección de peleas en CCTV (YOLO track + zonas por par + CLIP mosaico temporal)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "FIGHT",
+      "FIGHT_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "fight_set_score_th": {
+          "type": "number",
+          "default": 3.8,
+          "description": "umbral del score EMA para contar positivo"
+        },
+        "fight_consec_min": {
+          "type": "integer",
+          "default": 3,
+          "description": "batches CLIP positivos consecutivos para confirmar pelea"
+        },
+        "zone_max": {
+          "type": "integer",
+          "default": 3,
+          "minimum": 1,
+          "description": "zonas de pelea simultáneas máximas"
+        },
+        "fight_min_movement": {
+          "type": "number",
+          "default": 2.0,
+          "description": "movimiento mínimo del par para alimentar el buffer CLIP"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 20.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "robbery-detector",
+    "version": "3.0",
+    "task": "Detección de robo con violencia en CCTV (tracker YOLO + heurísticas de par + CLIP temporal V3)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "ROBO",
+      "ROBO_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "detect_scale": {
+          "type": "number",
+          "default": 1.0,
+          "minimum": 0.1,
+          "maximum": 1.0,
+          "description": "detección a fracción de la resolución (tracker y heurísticas)"
+        },
+        "robbery_alert_threshold": {
+          "type": "number",
+          "default": 0.75,
+          "description": "umbral de score CLIP suavizado (optimizado por ablación)"
+        },
+        "robbery_consec_min": {
+          "type": "integer",
+          "default": 1,
+          "description": "batches CLIP positivos consecutivos para confirmar"
+        },
+        "area_variation_thr": {
+          "type": "number",
+          "default": 0.1,
+          "description": "variación relativa de área de bbox para el gate area_spike"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "crash-detector",
+    "version": "1.0",
+    "task": "Detección de choques vehiculares en CCTV (YOLO track + heurísticas de proximidad + CLIP temporal)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "CHOQUE",
+      "CHOQUE_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "detect_scale": {
+          "type": "number",
+          "default": 1.0,
+          "minimum": 0.1,
+          "maximum": 1.0,
+          "description": "detección a fracción de la resolución (el original corre a resolución nativa)"
+        },
+        "crash_alert_threshold": {
+          "type": "number",
+          "default": 0.68,
+          "description": "umbral de score suavizado para confirmar choque"
+        },
+        "trigger_frames": {
+          "type": "integer",
+          "default": 7,
+          "description": "frames consecutivos de candidato para lockear el ROI"
+        },
+        "vehicle_min_conf": {
+          "type": "number",
+          "default": 0.4,
+          "description": "confianza mínima YOLO para considerar un vehículo"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "fardeo-detector",
+    "version": "2.0",
+    "task": "Detección de fardeo (hurto en retail) — YOLO-pose + heurística mano-ROI + X-CLIP windowed",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "FARDEO",
+      "FARDEO_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "regions": {
+          "type": "array",
+          "default": [],
+          "description": "polígonos ROI (anaqueles) en píxeles del frame: [[[x,y], [x,y], ...], ...]; sin ROIs la sesión no genera eventos",
+          "items": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        },
+        "fardeo_alert_threshold": {
+          "type": "number",
+          "default": 0.35,
+          "description": "umbral del score suavizado para marcar SOSPECHOSO"
+        },
+        "proximity_px": {
+          "type": "integer",
+          "default": 35,
+          "description": "dilatación de la ROI en px para la heurística mano-anaquel"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 24.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "carparts-detector",
+    "version": "4.0",
+    "task": "Detección de robo de autopartes en CCTV (YOLO track + ancla + CLIP anomaly)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "ROBO",
+      "ROBO_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "alert_threshold": {
+          "type": "number",
+          "default": 0.5,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "umbral de score suavizado para confirmar ROBO"
+        },
+        "segment_len": {
+          "type": "integer",
+          "default": 24,
+          "minimum": 4,
+          "description": "crops acumulados antes de correr el experto CLIP"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 20.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "people-counter",
+    "version": "1.0",
+    "task": "Conteo de personas por patch-zoom (grid + YOLO por patch + NMS global)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "CONTEO"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "scene": {
+          "type": "string",
+          "enum": [
+            "indoor",
+            "outdoor"
+          ],
+          "default": "outdoor",
+          "description": "perfil de escena: indoor (cámara cercana) fija conf=0.25/nms_iou=0.40; outdoor (cámara alta) conf=0.15/nms_iou=0.45"
+        },
+        "conf": {
+          "type": "number",
+          "description": "umbral de confianza YOLO (override del perfil de escena)"
+        },
+        "nms_iou": {
+          "type": "number",
+          "description": "IoU máximo del NMS global entre patches (override del perfil)"
+        },
+        "rows": {
+          "type": "integer",
+          "default": 2,
+          "minimum": 1,
+          "description": "filas del grid de patches"
+        },
+        "cols": {
+          "type": "integer",
+          "default": 4,
+          "minimum": 1,
+          "description": "columnas del grid de patches"
+        },
+        "overlap": {
+          "type": "number",
+          "default": 0.15,
+          "minimum": 0.0,
+          "maximum": 0.5,
+          "description": "fracción de overlap por lado entre patches"
+        },
+        "smooth_frames": {
+          "type": "integer",
+          "default": 15,
+          "minimum": 1,
+          "description": "ventana (frames) de la media móvil del conteo"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 5.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "area-restriction",
+    "version": "1.0",
+    "task": "Intrusión en zonas restringidas (YOLO + ByteTrack por zona + hit-test 3 reglas)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "INTRUSION",
+      "INTRUSION_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 3,
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "description": "lista de polígonos (zonas restringidas); cada zona es una lista de puntos [x, y] en PÍXELES del frame original (el script usaba 4 puntos; se acepta >= 3). Sin zonas ni polygon, la zona es el frame completo"
+        },
+        "polygon": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "description": "atajo para una sola zona: lista de [x, y] en píxeles del frame original (equivale a zones=[polygon])"
+        },
+        "scene": {
+          "type": "string",
+          "enum": [
+            "indoor",
+            "outdoor"
+          ],
+          "default": "outdoor",
+          "description": "perfil de escena: indoor fija min_bbox_zone_ratio=0.30/y_tol=20px; outdoor 0.05/50px"
+        },
+        "min_bbox_zone_ratio": {
+          "type": "number",
+          "description": "alto mínimo del bbox como fracción del alto de la zona (override del perfil)"
+        },
+        "zone_y_tolerance": {
+          "type": "integer",
+          "description": "tolerancia en px del guard de plano de suelo (override del perfil)"
+        },
+        "conf": {
+          "type": "number",
+          "default": 0.1,
+          "description": "confianza mínima post-tracking para aceptar una detección"
+        },
+        "hit_point": {
+          "type": "string",
+          "enum": [
+            "bottom_center",
+            "centroid",
+            "top_center"
+          ],
+          "default": "bottom_center",
+          "description": "punto de referencia del bbox para el hit-test"
+        },
+        "exit_grace_frames": {
+          "type": "integer",
+          "default": 20,
+          "minimum": 0,
+          "description": "frames de gracia antes de emitir INTRUSION_OFF al perder el track"
+        },
+        "crop_pad": {
+          "type": "integer",
+          "default": 40,
+          "minimum": 0,
+          "description": "padding (px) alrededor del bbox de la zona para el crop de inferencia"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "loitering-detector",
+    "version": "2.0",
+    "task": "Detección de merodeo en CCTV (YOLO track + reglas espacio-temporales por trayectoria + RF)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "MERODEO",
+      "MERODEO_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "detect_scale": {
+          "type": "number",
+          "default": 1.0,
+          "minimum": 0.1,
+          "maximum": 1.0,
+          "description": "detección a fracción de la resolución (ojo: los umbrales en px del original están calibrados a resolución nativa)"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "legacy",
+            "strict"
+          ],
+          "default": "legacy",
+          "description": "perfil de umbrales base del original (strict = más conservador)"
+        },
+        "loitering_threshold": {
+          "type": "number",
+          "default": 0.72,
+          "description": "umbral de probabilidad suavizada para alerta (0.85 en strict)"
+        },
+        "activation_threshold": {
+          "type": "number",
+          "default": 0.62,
+          "description": "umbral de probabilidad suavizada para activar el estado Loitering (0.75 en strict)"
+        },
+        "min_frames_activate": {
+          "type": "integer",
+          "default": 12,
+          "description": "frames consecutivos para pasar Normal -> Loitering (20 en strict)"
+        },
+        "min_frames_deactivate": {
+          "type": "integer",
+          "default": 30,
+          "description": "frames consecutivos para pasar Loitering -> Normal (50 en strict)"
+        },
+        "trajectory_points": {
+          "type": "integer",
+          "default": 120,
+          "description": "ventana deslizante de puntos de trayectoria para el análisis (40 en strict)"
+        },
+        "stride_frames": {
+          "type": "integer",
+          "default": 2,
+          "description": "predecir cada N frames (3 en strict)"
+        },
+        "min_walking_distance": {
+          "type": "number",
+          "default": 150.0,
+          "description": "px recorridos en la ventana reciente para considerar que camina"
+        },
+        "anchor_radius": {
+          "type": "number",
+          "default": 100.0,
+          "description": "radio (px) de la zona de anclaje: dentro de él no es merodeo"
+        },
+        "min_stationary_area": {
+          "type": "number",
+          "default": 5000.0,
+          "description": "área de movimiento (px²) bajo la cual se considera estacionario"
+        },
+        "use_advanced_rules": {
+          "type": "boolean",
+          "default": true,
+          "description": "reglas anti-falsos-positivos (estático, deadzone, corredor recto, circular)"
+        },
+        "yolo_conf": {
+          "type": "number",
+          "default": 0.35,
+          "description": "confianza mínima YOLO"
+        },
+        "yolo_iou": {
+          "type": "number",
+          "default": 0.6,
+          "description": "IoU NMS de YOLO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 15.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "parking-monitor",
+    "version": "2.0",
+    "task": "Ocupación de cajones de estacionamiento y verificación del vehículo registrado (YOLO + ResNet50 + color HSV + placa OCR)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "OCUPADO",
+      "LIBRE",
+      "VEHICULO_OK",
+      "ALERTA_VEHICULO"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "spots": {
+          "type": "array",
+          "description": "Cajones a monitorear (sin esto la sesión no emite eventos). Cada cajón: {id: int, name?: str, points: [[x, y], ...] — polígono de >=3 vértices en PÍXELES del frame del stream (o en [0,1] si spots_normalized=true), registration?: {features: [float x2048] (vector ResNet50 L2-normalizado del vehículo registrado), color?: str (uno de: Blanco, Negro, Gris, Plateado, Rojo, Azul, Verde, Amarillo, Naranja, Café/Marrón, Morado), plate?: str}}. Solo los cajones con registration.features se verifican.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "points"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "points": {
+                "type": "array",
+                "minItems": 3,
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "registration": {
+                "type": "object",
+                "properties": {
+                  "features": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  },
+                  "color": {
+                    "type": "string"
+                  },
+                  "plate": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "spots_normalized": {
+          "type": "boolean",
+          "default": false,
+          "description": "true → points en [0,1] relativos al frame; se escalan a píxeles en el primer frame"
+        },
+        "conf": {
+          "type": "number",
+          "default": 0.3,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "confianza mínima YOLO vehículos"
+        },
+        "iou_occ_thr": {
+          "type": "number",
+          "default": 0.2,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "fracción del polígono cubierta por bboxes para marcar OCUPADO"
+        },
+        "verify": {
+          "type": "boolean",
+          "default": true,
+          "description": "habilitar verificación del vehículo registrado (features/color/placa)"
+        },
+        "feat_sim_thr": {
+          "type": "number",
+          "default": 0.75,
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "umbral de similitud coseno ResNet50 por muestra"
+        },
+        "buffer_size": {
+          "type": "integer",
+          "default": 10,
+          "minimum": 1,
+          "description": "muestras acumuladas antes de emitir veredicto por mayoría"
+        },
+        "verify_every": {
+          "type": "integer",
+          "default": 5,
+          "minimum": 1,
+          "description": "verificar cada N frames de ocupación continua"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 1.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "combo",
+    "version": "1.0",
+    "task": "Pipeline: corre varios modelos sobre el mismo stream (un solo decode)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "*"
+    ],
+    "config_schema": {
+      "type": "object",
+      "required": [
+        "models"
+      ],
+      "properties": {
+        "models": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "nombres de modelos registrados a correr sobre el stream"
+        },
+        "configs": {
+          "type": "object",
+          "description": "config por modelo miembro: {nombre: {...su config_schema...}}"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "use_camera_composition"
+  },
+  {
+    "name": "pulso",
+    "version": "1.0",
+    "task": "Modelo sintético de diagnóstico: ignora el video y emite una detección centrada N s / calla M s (sin GPU ni pesos)",
+    "capabilities": [
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "CONTEO",
+      "CONTEO_OFF"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "on_s": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "description": "segundos emitiendo",
+          "maximum": 3600
+        },
+        "off_s": {
+          "type": "number",
+          "default": 10,
+          "minimum": 1,
+          "description": "segundos en silencio",
+          "maximum": 3600
+        },
+        "cadencia": {
+          "type": "string",
+          "enum": [
+            "flanco",
+            "segundo",
+            "fotograma"
+          ],
+          "default": "flanco",
+          "description": "flanco: 1 apertura + 1 cierre por ciclo (default). segundo/fotograma: solo estrés."
+        },
+        "tipo": {
+          "type": "string",
+          "default": "CONTEO",
+          "description": "type del evento; el cierre añade _OFF",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "fraccion": {
+          "type": "number",
+          "default": 0.5,
+          "description": "lado del bbox centrado, fracción del fotograma",
+          "minimum": 0.01,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 2.0,
+    "runtime": "python",
+    "available": true,
+    "reason": "synthetic_diagnostic",
+    "profile": {
+      "resident_mib": 0,
+      "session_mib": 16,
+      "warmup_mib": 0,
+      "in_flight": 1,
+      "measured": true,
+      "hardware": "synthetic-cpu-test-budget"
+    }
+  },
+  {
+    "name": "corridor-counter",
+    "version": "3.0",
+    "task": "Entradas y salidas por un corredor de conteo (box + escalera de líneas, reglas anti-oclusión R1-R5, guardián de luz); DENTRO persistente por contador_id. No es aforo instantáneo (eso es people-counter)",
+    "capabilities": [
+      "stream"
+    ],
+    "event_types": [
+      "ENTRADA",
+      "SALIDA",
+      "CONTEO_PAUSADO",
+      "CONTEO_PAUSADO_OFF",
+      "RESUMEN"
+    ],
+    "config_schema": {
+      "type": "object",
+      "required": [
+        "box"
+      ],
+      "properties": {
+        "box": {
+          "type": "array",
+          "description": "UNA región de exactamente 4 puntos [[x,y]x4] que atraviesa la puerta/corredor; el PRIMER lado = AFUERA. Píxeles del frame del stream, o 0..1 (se detecta solo). El recall medido exige que el box NO solape objetos fijos (cae de 98.8% a ~60%)"
+        },
+        "n_lines": {
+          "type": "integer",
+          "default": 5,
+          "description": "escalera interna (mayoría = N//2+1)"
+        },
+        "invert": {
+          "type": "boolean",
+          "default": false,
+          "description": "voltea AFUERA/ADENTRO"
+        },
+        "axis_rot": {
+          "type": "boolean",
+          "default": false,
+          "description": "usa el otro par de lados como eje"
+        },
+        "full_frame": {
+          "type": "boolean",
+          "default": false,
+          "description": "analiza el frame completo"
+        },
+        "dentro_inicial": {
+          "type": "integer",
+          "default": 0,
+          "description": "punto de partida del contador DENTRO"
+        },
+        "reset_conteo": {
+          "type": "boolean",
+          "default": false,
+          "description": "re-aplica dentro_inicial (in/out a 0)"
+        },
+        "contador_id": {
+          "type": "string",
+          "default": "default",
+          "description": "id ESTABLE del contador (p.ej. la cámara): el conteo persiste en <KINICH_COUNT_COUNTERS>/<id> y sobrevive reinicios del stream. No correr dos streams con el mismo id"
+        },
+        "resumen_cada_s": {
+          "type": "number",
+          "default": 0,
+          "description": "cada cuántos s emitir RESUMEN (0 = nunca)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "queue-cashier",
+    "version": "1.0",
+    "task": "Filas y cajero CRUZADOS por carril en la misma cámara: espera/servicio/deserción/aforo por carril + presencia e identidad del cajero; un cliente en caja sin cajero no cuenta como atendido",
+    "capabilities": [
+      "stream"
+    ],
+    "event_types": [
+      "DESERCION",
+      "AFORO_EXCEDIDO",
+      "AFORO_EXCEDIDO_OFF",
+      "EPISODIO",
+      "CAJA_DESATENDIDA",
+      "CAJA_DESATENDIDA_OFF",
+      "PERSONA_NO_CAJERO",
+      "PERSONA_NO_CAJERO_OFF",
+      "PERSONA_NO_RECONOCIDA",
+      "PERSONA_NO_RECONOCIDA_OFF",
+      "RESUMEN"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "zones": {
+          "type": "array",
+          "description": "Zonas tipadas: {tipo: FILA|CAJA|AFORO|CAJERO, points: [[x, y], ...] (>=3, en PÍXELES del frame del stream, o [0,1] si zones_normalized), carril?: int|str, nombre?: str}. UNA FILA/CAJA/AFORO por carril (varios carriles = varios valores de carril); CAJERO las que hagan falta — una zona CAJERO sin carril es COMODÍN y habilita todos los carriles.",
+          "items": {
+            "type": "object",
+            "required": [
+              "tipo",
+              "points"
+            ],
+            "properties": {
+              "tipo": {
+                "type": "string",
+                "enum": [
+                  "FILA",
+                  "CAJA",
+                  "AFORO",
+                  "CAJERO"
+                ]
+              },
+              "points": {
+                "type": "array",
+                "minItems": 3,
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "carril": {
+                "type": [
+                  "integer",
+                  "string"
+                ]
+              },
+              "nombre": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "zones_normalized": {
+          "type": "boolean",
+          "default": false
+        },
+        "capacidad_caja": {
+          "type": "integer",
+          "default": 1,
+          "minimum": 1
+        },
+        "min_fila": {
+          "type": "number",
+          "default": 0.5
+        },
+        "min_caja": {
+          "type": "number",
+          "default": 3.0
+        },
+        "gracia": {
+          "type": "number",
+          "default": 20.0
+        },
+        "limite_aforo": {
+          "type": "integer",
+          "default": 10
+        },
+        "conf": {
+          "type": "number",
+          "default": 0.35
+        },
+        "tolerance": {
+          "type": "number",
+          "default": 10,
+          "description": "s sin cajero antes de CAJA_DESATENDIDA; también cuánto siguen los clientes como atendiendo al irse"
+        },
+        "rise_seconds": {
+          "type": "number",
+          "default": 1.5
+        },
+        "person_conf": {
+          "type": "number",
+          "default": 0.5
+        },
+        "position_primary": {
+          "type": "boolean",
+          "default": false
+        },
+        "face_required": {
+          "type": "boolean",
+          "default": true
+        },
+        "alert_unknown": {
+          "type": "boolean",
+          "default": false
+        },
+        "resumen_cada_s": {
+          "type": "number",
+          "default": 0,
+          "description": "cada cuántos s emitir RESUMEN con los contadores fusionados (0 = nunca)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "whitegas",
+    "version": "1.0",
+    "task": "Fugas de gas blanco por segmentación de texto (SAM 3.1 INT4 W4A4, prompt configurable, sin tracking ni vetos WATER/CLOUD); FUGA_GAS con confirmación sostenida y máscara→bbox+área. No es el fire nativo (fuego/humo por CNN)",
+    "capabilities": [
+      "stream"
+    ],
+    "event_types": [
+      "FUGA_GAS",
+      "FUGA_GAS_OFF",
+      "RESUMEN"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "default": "a white gas leak plume",
+          "description": "qué busca SAM3 (texto). UN prompt por PROCESO: la primera sesión fija el conditioning; las siguientes con otro prompt reciben aviso y usan el cargado"
+        },
+        "threshold": {
+          "type": "number",
+          "default": 0.5,
+          "description": "score (sigmoid) mínimo para considerar detección"
+        },
+        "confirm_s": {
+          "type": "number",
+          "default": 2.0,
+          "description": "segundos SOSTENIDOS de detección antes de emitir FUGA_GAS (anti-parpadeo; el modelo no trae histéresis propia: su alert es False incondicional)"
+        },
+        "off_s": {
+          "type": "number",
+          "default": 5.0,
+          "description": "segundos sin detección antes de FUGA_GAS_OFF"
+        },
+        "resumen_cada_s": {
+          "type": "number",
+          "default": 0,
+          "description": "cada cuántos s emitir RESUMEN (0 = nunca)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 5.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  },
+  {
+    "name": "ppe-detector",
+    "version": "1.1",
+    "task": "PPE Detector — EPP por persona (casco/chaleco/botas/guantes x color), zero-shot",
+    "capabilities": [
+      "image",
+      "stream",
+      "clip"
+    ],
+    "event_types": [
+      "EPP_FALTA",
+      "EPP_FALTA_OFF",
+      "TOLERANCIA",
+      "TOLERANCIA_OFF",
+      "CUMPLIMIENTO"
+    ],
+    "config_schema": {
+      "type": "object",
+      "properties": {
+        "casco": {
+          "type": "object",
+          "properties": {
+            "require": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "enum": [
+                "cualquiera",
+                "amarillo",
+                "naranja",
+                "rojo",
+                "verde",
+                "azul",
+                "blanco",
+                "negro"
+              ]
+            },
+            "conf": {
+              "type": "number",
+              "minimum": 0.05,
+              "maximum": 0.95
+            }
+          },
+          "description": "exigencia de casco",
+          "additionalProperties": false
+        },
+        "chaleco": {
+          "type": "object",
+          "properties": {
+            "require": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "enum": [
+                "cualquiera",
+                "amarillo",
+                "naranja",
+                "rojo",
+                "verde",
+                "azul",
+                "blanco",
+                "negro"
+              ]
+            },
+            "conf": {
+              "type": "number",
+              "minimum": 0.05,
+              "maximum": 0.95
+            }
+          },
+          "description": "exigencia de chaleco",
+          "additionalProperties": false
+        },
+        "botas": {
+          "type": "object",
+          "properties": {
+            "require": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "enum": [
+                "cualquiera",
+                "amarillo",
+                "naranja",
+                "rojo",
+                "verde",
+                "azul",
+                "blanco",
+                "negro"
+              ]
+            },
+            "conf": {
+              "type": "number",
+              "minimum": 0.05,
+              "maximum": 0.95
+            }
+          },
+          "description": "exigencia de botas",
+          "additionalProperties": false
+        },
+        "guantes": {
+          "type": "object",
+          "properties": {
+            "require": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "enum": [
+                "cualquiera",
+                "amarillo",
+                "naranja",
+                "rojo",
+                "verde",
+                "azul",
+                "blanco",
+                "negro"
+              ]
+            },
+            "conf": {
+              "type": "number",
+              "minimum": 0.05,
+              "maximum": 0.95
+            }
+          },
+          "description": "exigencia de guantes",
+          "additionalProperties": false
+        },
+        "conf_person": {
+          "type": "number",
+          "default": 0.25,
+          "description": "confianza YOLO persona"
+        },
+        "zonas": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array"
+            }
+          },
+          "description": "poligonos [[x,y],...] normalizados 0-1 o en pixeles; vacio = todo el frame"
+        },
+        "zone_zoom": {
+          "type": "boolean",
+          "default": false,
+          "description": "YOLO adicional sobre el recorte de cada zona (max 3): detecta personas pequeñas en zonas lejanas"
+        },
+        "reid": {
+          "type": "boolean",
+          "default": true,
+          "description": "identidad anonima persistente P<n>"
+        },
+        "reid_match_th": {
+          "type": "number",
+          "default": 0.65
+        },
+        "vote_window_s": {
+          "type": "number",
+          "default": 60
+        },
+        "refresh_s": {
+          "type": "number",
+          "default": 5,
+          "description": "re-evaluar cada N s por persona"
+        },
+        "alert_after_s": {
+          "type": "number",
+          "default": 3
+        },
+        "tol_pct": {
+          "type": "number",
+          "default": 20,
+          "description": "% sin EPP tolerado (evento TOLERANCIA)"
+        },
+        "min_personas_pct": {
+          "type": "integer",
+          "default": 2
+        },
+        "stats_every_s": {
+          "type": "number",
+          "default": 10
+        },
+        "color_min_frac": {
+          "type": "number",
+          "default": 70
+        },
+        "min_colored_frac": {
+          "type": "number",
+          "default": 25
+        },
+        "sat_min": {
+          "type": "integer",
+          "default": 35
+        },
+        "val_min": {
+          "type": "integer",
+          "default": 60
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_fps": 10.0,
+    "runtime": "python",
+    "available": false,
+    "reason": "profile_and_assets_not_validated"
+  }
+]

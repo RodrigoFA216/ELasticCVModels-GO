@@ -1,0 +1,7 @@
+syntax = "proto3";
+package kinich.worker.v1;
+option go_package = "kinich-go/proto/worker/v1";
+// Esquema de identidad para futuros transportes binarios. El transporte de
+// primera instalación usa message.schema.json por pipes NDJSON; no usa gRPC.
+message Identity { string worker_id = 1; string camera_id = 2; string execution_id = 3; string generation = 4; string member_id = 5; string member_generation = 6; uint64 revision = 7; }
+message EventIdentity { Identity owner = 1; string event_id = 2; string model = 3; uint64 sequence = 4; }
